@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bolívar Living — Propiedades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:            #0B0B0C;
+  --panel:         #141517;
+  --panel-2:       #1B1C1F;
+  --rail:          #0E0F10;
+  --line:          #26272B;
+  --line-soft:     #1F2023;
+  --ink:           #EDEAE4;
+  --ink-dim:       #9A9AA0;
+  --ink-faint:     #6B6C72;
+  --gold:          #C9A15A;
+  --gold-bright:   #E0B96B;
+  --gold-wash:     rgba(201,161,90,.10);
+  --bcorp:         #00A651;
+  --alert:         #FA8D29;
+  --radius:        10px;
+  --rail-w:        212px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+:focus-visible{outline:2px solid var(--gold-bright);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ============================================================
+   SHELL
+   ============================================================ */
+.shell{display:flex;min-height:100vh}
+
+.rail{
+  width:var(--rail-w);flex:0 0 var(--rail-w);
+  background:var(--rail);border-right:1px solid var(--line-soft);
+  padding:22px 0;display:flex;flex-direction:column;
+}
+.wordmark{padding:0 22px 26px;border-bottom:1px solid var(--line-soft);margin-bottom:18px}
+.wordmark b{
+  font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:27px;letter-spacing:.01em;display:block;line-height:1;
+}
+.wordmark span{
+  display:block;margin-top:7px;font-size:9.5px;letter-spacing:.19em;
+  color:var(--gold);text-transform:uppercase;
+}
+.rail-group{padding:0 12px;margin-bottom:20px}
+.rail-group>p{
+  margin:0 10px 8px;font-size:9.5px;letter-spacing:.15em;
+  color:var(--ink-faint);text-transform:uppercase;
+}
+.rail a{
+  display:block;padding:8px 10px;border-radius:7px;
+  color:var(--ink-dim);text-decoration:none;font-size:13.5px;
+}
+.rail a:hover{color:var(--ink);background:var(--panel)}
+.rail a[aria-current]{color:var(--ink);background:var(--gold-wash);box-shadow:inset 2px 0 0 var(--gold)}
+.rail-foot{margin-top:auto;padding:16px 22px 0;border-top:1px solid var(--line-soft);color:var(--ink-faint);font-size:12px}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar{
+  display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;
+  padding:24px 30px 20px;border-bottom:1px solid var(--line-soft);
+}
+.topbar h1{
+  margin:0;font-family:'Instrument Serif',Georgia,serif;
+  font-weight:400;font-size:29px;line-height:1.1;
+}
+.topbar h1+p{margin:5px 0 0;color:var(--ink-dim);font-size:13px}
+.stamp{margin-left:auto;text-align:right;font-size:12px;color:var(--ink-dim);white-space:nowrap}
+.stamp b{display:block;color:var(--ink);font-weight:600;font-size:13px}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bcorp);margin-right:6px;vertical-align:1px}
+
+.notice{
+  margin:16px 30px 0;padding:11px 14px;border-radius:var(--radius);
+  border:1px solid rgba(250,141,41,.32);background:rgba(250,141,41,.07);
+  color:#F1C79B;font-size:12.5px;
+}
+.notice b{color:var(--alert)}
+.notice[hidden]{display:none}
+
+/* ============================================================
+   KPI STRIP
+   ============================================================ */
+.kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  padding:22px 30px 4px;
+}
+.kpi{
+  background:var(--panel);border:1px solid var(--line-soft);
+  border-radius:var(--radius);padding:16px 18px;
+}
+.kpi>p{margin:0;font-size:12px;color:var(--ink-dim)}
+.kpi>strong{
+  display:block;margin:7px 0 3px;font-size:25px;font-weight:600;letter-spacing:-.01em;
+  white-space:nowrap;                 /* "40,182 m²" no debe partirse */
+}
+.kpi>small{color:var(--ink-faint);font-size:11.5px}
+.kpi--lead>strong{color:var(--gold-bright)}
+
+/* ============================================================
+   PROJECT CARDS
+   ============================================================ */
+.section-head{
+  display:flex;align-items:baseline;gap:12px;padding:26px 30px 12px;
+}
+.section-head h2{margin:0;font-size:15px;font-weight:600}
+.section-head span{color:var(--ink-faint);font-size:12.5px}
+
+.cards{
+  display:grid;gap:14px;padding:0 30px;
+  grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+}
+.card{
+  text-align:left;width:100%;
+  background:var(--panel);border:1px solid var(--line-soft);
+  border-radius:var(--radius);padding:16px 17px 14px;
+  transition:border-color .14s,background .14s;
+}
+.card:hover{border-color:#37383D;background:var(--panel-2)}
+.card[aria-pressed="true"]{border-color:var(--gold);background:var(--panel-2)}
+.card h3{
+  margin:0 0 2px;font-family:'Instrument Serif',Georgia,serif;
+  font-weight:400;font-size:20px;line-height:1.15;
+}
+.card>.sku-src{margin:0 0 13px;font-size:11px;color:var(--ink-faint)}
+.card dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:7px 10px;font-size:12.5px}
+.card dt{color:var(--ink-dim)}
+.card dd{margin:0;text-align:right;font-weight:500}
+.card dd.hero{color:var(--gold-bright);font-weight:600}
+.card>footer{
+  margin-top:14px;padding-top:11px;border-top:1px solid var(--line-soft);
+  font-size:12px;color:var(--gold);
+}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.detail{margin:26px 30px 40px;border:1px solid var(--line-soft);border-radius:var(--radius);background:var(--panel);overflow:hidden}
+.detail[hidden]{display:none}
+.detail>header{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:15px 18px;border-bottom:1px solid var(--line-soft);
+}
+.detail>header h2{margin:0;font-size:15px;font-weight:600}
+.detail>header h2 em{font-style:normal;color:var(--gold-bright)}
+.tools{margin-left:auto;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.tools input,.tools select{
+  background:var(--bg);border:1px solid var(--line);border-radius:7px;
+  padding:7px 11px;font-size:12.5px;min-width:0;
+}
+.tools input{width:190px}
+.tools input::placeholder{color:var(--ink-faint)}
+.btn{
+  border:1px solid var(--line);border-radius:7px;padding:7px 13px;
+  font-size:12.5px;font-weight:500;color:var(--ink-dim);
+}
+.btn:hover{border-color:var(--gold);color:var(--gold-bright)}
+
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:10px 14px;text-align:left;white-space:nowrap}
+thead th{
+  position:sticky;top:0;background:var(--panel-2);
+  font-size:11.5px;font-weight:600;color:var(--ink-dim);
+  border-bottom:1px solid var(--line);cursor:pointer;user-select:none;
+}
+thead th:hover{color:var(--ink)}
+thead th[data-dir]::after{content:'↑';margin-left:5px;color:var(--gold)}
+thead th[data-dir="desc"]::after{content:'↓'}
+tbody tr{border-bottom:1px solid var(--line-soft)}
+tbody tr:hover{background:var(--panel-2)}
+tbody td.num{text-align:right}
+tbody td.key{color:var(--gold);font-weight:500}
+tbody td.m2{color:var(--ink-dim)}
+
+.tfoot{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 18px;border-top:1px solid var(--line-soft);
+  font-size:12.5px;color:var(--ink-dim);
+}
+.pager{margin-left:auto;display:flex;gap:6px;align-items:center}
+.pager button{
+  border:1px solid var(--line);border-radius:6px;
+  padding:5px 10px;font-size:12.5px;color:var(--ink-dim);
+}
+.pager button:hover:not(:disabled){border-color:var(--gold);color:var(--gold-bright)}
+.pager button:disabled{opacity:.35;cursor:default}
+.pager b{padding:0 7px;color:var(--ink);font-weight:600}
+
+.empty{padding:44px 18px;text-align:center;color:var(--ink-dim);font-size:13.5px}
+.empty b{display:block;color:var(--ink);font-weight:600;margin-bottom:5px}
+
+.skeleton{padding:36px 18px;text-align:center;color:var(--ink-faint);font-size:13px}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:900px){
+  .shell{flex-direction:column}
+  .rail{width:100%;flex:none;flex-direction:row;align-items:center;
+        padding:12px 18px;border-right:none;border-bottom:1px solid var(--line-soft);overflow-x:auto}
+  .wordmark{padding:0 18px 0 0;margin:0 16px 0 0;border-bottom:none;border-right:1px solid var(--line-soft)}
+  .wordmark b{font-size:21px}
+  .rail-group{margin:0;padding:0;display:flex;gap:4px}
+  .rail-group>p,.rail-foot{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr);padding:18px}
+  .kpi{padding:14px}
+  .kpi>strong{font-size:20px}          /* cabe sin partirse en 2 columnas */
+  .topbar,.section-head{padding-left:18px;padding-right:18px}
+  .cards{padding:0 18px}
+  .detail{margin:20px 18px 30px}
+  .tools{width:100%;margin-left:0}
+  .tools input{flex:1;width:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="wordmark"><b>Bolívar.</b><span>Proyectos de Vida</span></div>
+    <div class="rail-group">
+      <p>Portafolio</p>
+      <a href="#" aria-current="page">Propiedades</a>
+      <a href="#">Clientes</a>
+      <a href="#">Reportes</a>
+    </div>
+    <div class="rail-foot">Armando Barrios<br><span style="color:var(--ink-faint)">Tecnología</span></div>
+  </nav>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Propiedades</h1>
+        <p>Inventario por proyecto, desde el Data Lake</p>
+      </div>
+      <div class="stamp" id="stamp"></div>
+    </header>
+
+    <p class="notice" id="notice" hidden></p>
+
+    <section class="kpis" id="kpis" aria-label="Totales del portafolio"></section>
+
+    <div class="section-head">
+      <h2>Proyectos</h2>
+      <span id="cardsHint">Elegí un proyecto para ver sus unidades</span>
+    </div>
+    <section class="cards" id="cards"><p class="skeleton">Cargando proyectos…</p></section>
+
+    <section class="detail" id="detail" hidden>
+      <header>
+        <h2>Unidades de <em id="detailName"></em></h2>
+        <div class="tools">
+          <input type="search" id="search" placeholder="Buscar SKU o nivel" aria-label="Buscar unidades">
+          <select id="pageSize" aria-label="Filas por página">
+            <option value="10">10 por página</option>
+            <option value="25" selected>25 por página</option>
+            <option value="50">50 por página</option>
+            <option value="9999">Todas</option>
+          </select>
+          <button class="btn" id="export">Descargar CSV</button>
+        </div>
+      </header>
+      <div id="detailBody"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ============================================================================
+   1. CONFIGURACIÓN
+   ----------------------------------------------------------------------------
+   Hoy la SPA llama directo a API Gateway. Cuando entre Power Automate,
+   cambiá MODE a 'flow' y pegá la URL del flujo en FLOW_URL. Nada más.
+   ============================================================================ */
+const CONFIG = {
+  MODE: 'direct',                 // 'direct' | 'flow'
+  API_BASE: 'https://pgzplc6xz6.execute-api.us-east-1.amazonaws.com',
+  FLOW_URL: '',                   // ← URL del flujo HTTP de Power Automate
+  PAGE_PARAM: 'pagina',           // nombre del parámetro de paginación (por confirmar)
+  SIZE_PARAM: 'tamano_pagina',
+  MAX_PAGES: 40,                  // tope de seguridad
+  TZ: 'America/El_Salvador'
+};
+
+/* Nombre crudo del Data Lake → nombre presentable */
+const DISPLAY = {
+  'AVITAT-Duo':    'Avitat Duo',
+  'AVITAT-Unique': 'Avitat Unique',
+  'TREVO TORRE 1': 'Trevo Torre 1',
+  'Casa 725':      'Casa 725'
+};
+const label = raw => DISPLAY[raw] || raw;
+
+/* ============================================================================
+   2. DATOS DE RESPALDO
+   Respuestas reales capturadas el 1-sep. Si CORS bloquea la llamada, la
+   pantalla se dibuja igual con esto y avisa que no son datos en vivo.
+   ============================================================================ */
+const FALLBACK_PROJECTS = {proyectos:[
+  {proyecto:'AVITAT-Duo',    cantidad_unidades:70, m2_vendibles_totales:5303,  monto_total:13808532,     precio_promedio_m2:2603.909485197058,  fecha_actualizacion:'2026-09-01 18:12:01.466000 UTC'},
+  {proyecto:'Casa 725',      cantidad_unidades:87, m2_vendibles_totales:16045, monto_total:52541220.7605, precio_promedio_m2:3274.616438797133, fecha_actualizacion:'2026-09-01 18:12:01.466000 UTC'},
+  {proyecto:'TREVO TORRE 1', cantidad_unidades:88, m2_vendibles_totales:12577, monto_total:41100458,     precio_promedio_m2:3267.9063369643,   fecha_actualizacion:'2026-09-01 18:12:01.466000 UTC'},
+  {proyecto:'AVITAT-Unique', cantidad_unidades:85, m2_vendibles_totales:6257,  monto_total:15447900,     precio_promedio_m2:2468.8988333066964, fecha_actualizacion:'2026-09-01 18:12:01.466000 UTC'}
+]};
+
+const FALLBACK_UNITS = {proyecto:'AVITAT-Duo',pagina:1,tamano_pagina:10,total_unidades:70,unidades:[
+  {sku:'AV-DUO-N01-01',nivel:'1',fachada:'Norte',area:92,metraje:'92',precio:225800,precio_m2:2454.3478260869565,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N01-02',nivel:'1',fachada:'Norte',area:60,metraje:'60',precio:162997,precio_m2:2716.616666666667,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N01-03',nivel:'1',fachada:'Norte',area:60,metraje:'60',precio:163292,precio_m2:2721.5333333333,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-01',nivel:'2',fachada:'Norte',area:76,metraje:'76',precio:185058,precio_m2:2434.9736842105262,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-02',nivel:'2',fachada:'Norte',area:60,metraje:'60',precio:156824,precio_m2:2613.733333333333,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-03',nivel:'2',fachada:'Norte',area:60,metraje:'60',precio:156824,precio_m2:2613.733333333333,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-04',nivel:'2',fachada:'Norte',area:91,metraje:'91',precio:214960,precio_m2:2362.197802197802,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-05',nivel:'2',fachada:'Sur',  area:76,metraje:'76',precio:196256,precio_m2:2582.315789473684,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-06',nivel:'2',fachada:'Sur',  area:76,metraje:'76',precio:199243,precio_m2:2621.6184210526317,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null},
+  {sku:'AV-DUO-N02-07',nivel:'2',fachada:'Sur',  area:92,metraje:'92',precio:232865,precio_m2:2531.141304347826,habitaciones:'0',banos:0,torre:null,tipologia:null,nomenclatura:null}
+]};
+
+/* ============================================================================
+   3. FORMATO
+   ============================================================================ */
+const money = n => n==null||isNaN(n) ? '—'
+  : '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:0});
+const money2 = n => n==null||isNaN(n) ? '—'
+  : '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const m2 = n => n==null||isNaN(n) ? '—'
+  : Number(n).toLocaleString('en-US',{maximumFractionDigits:2})+' m²';
+const int = n => n==null||isNaN(n) ? '—' : Number(n).toLocaleString('en-US');
+
+/* "2026-09-01 18:12:01.466000 UTC" → Date. El formato no es ISO válido,
+   así que se normaliza antes de parsear o Safari devuelve Invalid Date. */
+function parseStamp(raw){
+  if(!raw) return null;
+  const iso = String(raw).trim()
+    .replace(' UTC','Z').replace(' ','T')
+    .replace(/(\.\d{3})\d+Z$/,'$1Z');
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? null : d;
+}
+function fmtStamp(d){
+  if(!d) return '—';
+  return new Intl.DateTimeFormat('es-SV',{
+    timeZone:CONFIG.TZ, day:'numeric', month:'short',
+    hour:'numeric', minute:'2-digit', hour12:true
+  }).format(d);
+}
+
+/* ============================================================================
+   4. RED
+   ============================================================================ */
+function endpoint(path){
+  return CONFIG.MODE==='flow' && CONFIG.FLOW_URL
+    ? CONFIG.FLOW_URL + (CONFIG.FLOW_URL.includes('?')?'&':'?') + 'ruta=' + encodeURIComponent(path)
+    : CONFIG.API_BASE + path;
+}
+async function getJSON(path){
+  const res = await fetch(endpoint(path),{headers:{Accept:'application/json'}});
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  return res.json();
+}
+
+const STATE = {projects:[], units:[], project:null, sort:{key:'sku',dir:'asc'}, page:1, size:25, live:true};
+
+function warn(html){
+  const el = document.getElementById('notice');
+  el.innerHTML = html; el.hidden = false;
+}
+
+/* Un archivo abierto desde el disco (file:, content:, blob:) o una página
+   dentro de un iframe con sandbox tienen origen `null`. Ningún servidor
+   puede autorizar ese origen, ni con CORS bien configurado. Distinguirlo
+   evita mandar a Jorlin a arreglar algo que no está roto. */
+function isNullOrigin(){
+  const p = (location.protocol || '').toLowerCase();
+  if(p==='file:' || p==='content:' || p==='blob:' || p==='data:') return true;
+  try{ if(location.origin === 'null' || location.origin === '') return true; }catch(e){ return true; }
+  return false;
+}
+
+function offlineNotice(err, detalle){
+  return isNullOrigin()
+    ? '<b>Esta prueba no cuenta.</b> El archivo está abierto localmente, así que el navegador '
+      + 'le asigna origen <code>null</code> y bloquea cualquier llamada externa. No es problema '
+      + 'de la API. Para probar de verdad hay que servir la página desde una URL <code>https://</code>. '
+      + detalle
+    : '<b>Sin conexión a la API.</b> ' + detalle
+      + ' Causa probable: falta el header <code>Access-Control-Allow-Origin</code> en API Gateway '
+      + 'para el origen <code>' + esc(location.origin) + '</code>. (' + esc(err.message) + ')';
+}
+
+/* ============================================================================
+   5. VISTA 1 — RESUMEN POR PROYECTO
+   ============================================================================ */
+async function loadProjects(){
+  let data;
+  try{
+    data = await getJSON('/proyectos');
+  }catch(err){
+    STATE.live = false;
+    data = FALLBACK_PROJECTS;
+    warn(offlineNotice(err, 'La pantalla se está dibujando con la captura del 1 de septiembre, no con datos en vivo.'));
+  }
+  STATE.projects = (data.proyectos||[]).map(p=>({
+    proyecto: p.proyecto,
+    unidades: Number(p.cantidad_unidades)||0,
+    m2:       Number(p.m2_vendibles_totales)||0,
+    monto:    Number(p.monto_total)||0,
+    ratio:    Number(p.precio_promedio_m2)||0,
+    stamp:    parseStamp(p.fecha_actualizacion)
+  }));
+  renderKpis();
+  renderCards();
+  renderStamp();
+}
+
+/* El $/m² global es SUM(monto)/SUM(m2), NO el promedio de los cuatro ratios.
+   Promediar los ratios pesa igual a un proyecto de 70 unidades que a uno de 88. */
+function totals(rows){
+  const t = rows.reduce((a,r)=>({
+    unidades:a.unidades+r.unidades, m2:a.m2+r.m2, monto:a.monto+r.monto
+  }),{unidades:0,m2:0,monto:0});
+  t.ratio = t.m2 > 0 ? t.monto/t.m2 : null;
+  return t;
+}
+
+function renderKpis(){
+  const t = totals(STATE.projects);
+  const n = STATE.projects.length;
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><p>Unidades en portafolio</p><strong>${int(t.unidades)}</strong>
+      <small>${n} proyecto${n===1?'':'s'}</small></div>
+    <div class="kpi"><p>Valor de lista</p><strong>${money(t.monto)}</strong>
+      <small>Suma de precios, sin descuentos</small></div>
+    <div class="kpi"><p>Área vendible</p><strong>${int(t.m2)} m²</strong>
+      <small>Suma de metraje por unidad</small></div>
+    <div class="kpi kpi--lead"><p>Precio por m²</p><strong>${money2(t.ratio)}</strong>
+      <small>Ponderado por área, no promedio simple</small></div>`;
+}
+
+function renderCards(){
+  const host = document.getElementById('cards');
+  if(!STATE.projects.length){
+    host.innerHTML = '<p class="empty"><b>No hay proyectos</b>La API respondió sin registros.</p>';
+    return;
+  }
+  host.innerHTML = STATE.projects.map(p=>`
+    <button class="card" data-proyecto="${esc(p.proyecto)}" aria-pressed="false">
+      <h3>${esc(label(p.proyecto))}</h3>
+      <p class="sku-src">${esc(p.proyecto)}</p>
+      <dl>
+        <dt>Unidades</dt><dd>${int(p.unidades)}</dd>
+        <dt>Valor de lista</dt><dd>${money(p.monto)}</dd>
+        <dt>Área vendible</dt><dd>${int(p.m2)} m²</dd>
+        <dt>Precio por m²</dt><dd class="hero">${money2(p.ratio)}</dd>
+      </dl>
+      <footer>Ver unidades</footer>
+    </button>`).join('');
+
+  host.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('click',()=>selectProject(c.dataset.proyecto));
+  });
+}
+
+function renderStamp(){
+  const d = STATE.projects.map(p=>p.stamp).filter(Boolean).sort((a,b)=>b-a)[0];
+  document.getElementById('stamp').innerHTML = STATE.live
+    ? `<span class="dot"></span>Actualizado<b>${fmtStamp(d)}</b>`
+    : `Captura del<b>${fmtStamp(d)}</b>`;
+}
+
+/* ============================================================================
+   6. VISTA 2 — DETALLE DE UNIDADES
+   ============================================================================ */
+const COLUMNS = [
+  {key:'sku',          head:'SKU',          cls:'key'},
+  {key:'nomenclatura', head:'Nomenclatura'},
+  {key:'torre',        head:'Torre'},
+  {key:'nivel',        head:'Nivel',        numeric:true, cls:'num'},
+  {key:'tipologia',    head:'Tipología'},
+  {key:'area',         head:'Área',         numeric:true, cls:'num', fmt:m2},
+  {key:'habitaciones', head:'Habitaciones', numeric:true, cls:'num'},
+  {key:'banos',        head:'Baños',        numeric:true, cls:'num'},
+  {key:'fachada',      head:'Fachada'},
+  {key:'precio',       head:'Precio',       numeric:true, cls:'num', fmt:money},
+  {key:'precio_m2',    head:'$/m²',         numeric:true, cls:'num m2', fmt:money2}
+];
+
+/* Una columna se oculta si TODAS las filas la traen vacía. `habitaciones` y
+   `banos` llegan en 0, no en null: mostrarlos pintaría un cero que se lee
+   como dato real. Si el pipeline los arregla, reaparecen solas. */
+function deadColumns(rows){
+  return COLUMNS.filter(c=>{
+    if(c.key==='sku') return false;
+    return rows.every(r=>{
+      const v = r[c.key];
+      if(v==null || v==='') return true;
+      return c.numeric && Number(v)===0;
+    });
+  }).map(c=>c.key);
+}
+
+async function selectProject(raw){
+  STATE.project = raw; STATE.page = 1;
+  document.querySelectorAll('.card').forEach(c=>
+    c.setAttribute('aria-pressed', String(c.dataset.proyecto===raw)));
+  document.getElementById('detailName').textContent = label(raw);
+  document.getElementById('detail').hidden = false;
+  document.getElementById('search').value = '';
+  document.getElementById('detailBody').innerHTML = '<p class="skeleton">Cargando unidades…</p>';
+  document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});
+
+  try{
+    STATE.units = await fetchAllUnits(raw);
+  }catch(err){
+    if(raw==='AVITAT-Duo'){
+      STATE.units = FALLBACK_UNITS.unidades;
+      warn(offlineNotice(err, 'Mostrando las 10 unidades capturadas de Avitat Duo.'));
+    }else{
+      document.getElementById('detailBody').innerHTML =
+        `<p class="empty"><b>No se pudieron cargar las unidades</b>${esc(err.message)}. `
+        + `Revisá que la API responda y que el nombre del proyecto viaje sin modificar.</p>`;
+      return;
+    }
+  }
+  renderTable();
+}
+
+/* La API pagina de 10 en 10 pero no sabemos aún el nombre del parámetro.
+   Se intenta con CONFIG.PAGE_PARAM; si la página 2 repite el primer SKU,
+   se corta y se avisa en vez de duplicar filas en silencio. */
+async function fetchAllUnits(raw){
+  const path = '/proyectos/'+encodeURIComponent(raw)+'/unidades';
+  const first = await getJSON(path);
+  let rows = first.unidades || [];
+  const total = Number(first.total_unidades) || rows.length;
+  const size  = Number(first.tamano_pagina) || rows.length || 10;
+  if(rows.length >= total) return rows;
+
+  const seen = new Set(rows.map(r=>r.sku));
+  const pages = Math.min(Math.ceil(total/size), CONFIG.MAX_PAGES);
+  for(let p=2; p<=pages; p++){
+    let batch;
+    try{
+      batch = await getJSON(`${path}?${CONFIG.PAGE_PARAM}=${p}&${CONFIG.SIZE_PARAM}=${size}`);
+    }catch{ break; }
+    const next = (batch.unidades||[]).filter(r=>!seen.has(r.sku));
+    if(!next.length){
+      warn(`<b>Paginación sin resolver.</b> La API declara ${total} unidades pero solo devuelve `
+        + `${rows.length}. El parámetro <code>${CONFIG.PAGE_PARAM}</code> no cambió el resultado — `
+        + `hay que confirmar su nombre con Jorlin y ajustarlo en CONFIG.PAGE_PARAM.`);
+      break;
+    }
+    next.forEach(r=>seen.add(r.sku));
+    rows = rows.concat(next);
+  }
+  return rows;
+}
+
+function visibleRows(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let rows = STATE.units;
+  if(q) rows = rows.filter(r =>
+    String(r.sku||'').toLowerCase().includes(q) ||
+    String(r.nivel||'').toLowerCase().includes(q) ||
+    String(r.fachada||'').toLowerCase().includes(q));
+
+  const {key,dir} = STATE.sort;
+  const col = COLUMNS.find(c=>c.key===key);
+  const mul = dir==='asc' ? 1 : -1;
+  return rows.slice().sort((a,b)=>{
+    let x=a[key], y=b[key];
+    if(col && col.numeric){           // 'nivel' llega como string: "10" < "2" al ordenar texto
+      x = Number(x)||0; y = Number(y)||0;
+      return (x-y)*mul;
+    }
+    return String(x??'').localeCompare(String(y??''),'es',{numeric:true})*mul;
+  });
+}
+
+function renderTable(){
+  const host = document.getElementById('detailBody');
+  if(!STATE.units.length){
+    host.innerHTML = '<p class="empty"><b>Sin unidades</b>Este proyecto no devolvió registros.</p>';
+    return;
+  }
+  const dead = deadColumns(STATE.units);
+  const cols = COLUMNS.filter(c=>!dead.includes(c.key));
+  const rows = visibleRows();
+  const size = STATE.size;
+  const pages = Math.max(1, Math.ceil(rows.length/size));
+  STATE.page = Math.min(STATE.page, pages);
+  const slice = rows.slice((STATE.page-1)*size, STATE.page*size);
+
+  const deadNote = dead.length
+    ? `${dead.length} columna${dead.length===1?'':'s'} oculta${dead.length===1?'':'s'} por venir vacía${dead.length===1?'':'s'}: `
+      + dead.map(k=>COLUMNS.find(c=>c.key===k).head).join(', ')
+    : '';
+
+  host.innerHTML = `
+    <div class="tablewrap">
+      <table>
+        <thead><tr>${cols.map(c=>
+          `<th data-key="${c.key}"${STATE.sort.key===c.key?` data-dir="${STATE.sort.dir}"`:''}
+               scope="col">${c.head}</th>`).join('')}</tr></thead>
+        <tbody>${slice.map(r=>`<tr>${cols.map(c=>{
+          const v = r[c.key];
+          const txt = (v==null||v==='') ? '—' : (c.fmt ? c.fmt(v) : esc(String(v)));
+          return `<td class="${c.cls||''}">${txt}</td>`;
+        }).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>
+    <div class="tfoot">
+      <span>${rows.length} de ${STATE.units.length} unidades${deadNote?' · '+deadNote:''}</span>
+      <div class="pager">
+        <button id="prev"${STATE.page<=1?' disabled':''}>Anterior</button>
+        <b>${STATE.page} / ${pages}</b>
+        <button id="next"${STATE.page>=pages?' disabled':''}>Siguiente</button>
+      </div>
+    </div>`;
+
+  host.querySelectorAll('thead th').forEach(th=>{
+    th.addEventListener('click',()=>{
+      const k = th.dataset.key;
+      STATE.sort = {key:k, dir: STATE.sort.key===k && STATE.sort.dir==='asc' ? 'desc':'asc'};
+      renderTable();
+    });
+  });
+  const prev = host.querySelector('#prev'), next = host.querySelector('#next');
+  if(prev) prev.addEventListener('click',()=>{STATE.page--;renderTable();});
+  if(next) next.addEventListener('click',()=>{STATE.page++;renderTable();});
+}
+
+/* ============================================================================
+   7. EXPORTAR
+   ============================================================================ */
+function toCSV(){
+  const cols = COLUMNS.filter(c=>!deadColumns(STATE.units).includes(c.key));
+  const esc2 = v => `"${String(v??'').replace(/"/g,'""')}"`;
+  const lines = [cols.map(c=>esc2(c.head)).join(',')];
+  visibleRows().forEach(r=>lines.push(cols.map(c=>esc2(r[c.key])).join(',')));
+  return '\ufeff'+lines.join('\r\n');
+}
+function download(){
+  const blob = new Blob([toCSV()],{type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `unidades-${(STATE.project||'proyecto').replace(/\s+/g,'-')}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* ============================================================================
+   8. UTILIDADES + ARRANQUE
+   ============================================================================ */
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.getElementById('search').addEventListener('input',()=>{STATE.page=1;renderTable();});
+document.getElementById('pageSize').addEventListener('change',e=>{
+  STATE.size = Number(e.target.value); STATE.page = 1; renderTable();
+});
+document.getElementById('export').addEventListener('click',download);
+
+loadProjects();
+
+/* Expuesto para la suite de pruebas */
+if(typeof window!=='undefined'){
+  window.__BL__ = {CONFIG, STATE, COLUMNS, totals, deadColumns, parseStamp,
+                   visibleRows, toCSV, label, money, money2, int, m2,
+                   isNullOrigin, offlineNotice};
+}
+</script>
+</body>
+</html>
